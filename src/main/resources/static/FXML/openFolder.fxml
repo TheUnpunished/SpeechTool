@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane prefHeight="150.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xyz.unpunished.speechtool.controller.OpenFolderController">
+   <children>
+      <HBox layoutX="15.0" layoutY="25.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+         <children>
+            <TextField fx:id="gamePathField" editable="false" prefHeight="25.0" prefWidth="250.0" promptText="*game*\sound\speech path here..." />
+            <Button mnemonicParsing="false" onAction="#selectPath" prefHeight="25.0" prefWidth="60.0" text="Browse">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+      <GridPane layoutX="15.0" layoutY="67.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="75.0" minWidth="10.0" prefWidth="45.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.0" minWidth="10.0" prefWidth="80.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="10.0" prefWidth="70.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="112.0" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ComboBox fx:id="gameBox" prefWidth="438.0" GridPane.columnIndex="1" />
+            <ComboBox fx:id="languageBox" prefWidth="150.0" GridPane.columnIndex="3" />
+            <Label text="Game:" />
+            <Label prefWidth="60.0" text="Language:" GridPane.columnIndex="2">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </Label>
+         </children>
+      </GridPane>
+      <HBox layoutX="211.0" layoutY="110.0" spacing="10.0" AnchorPane.rightAnchor="15.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#okAction" prefHeight="25.0" prefWidth="60.0" text="OK" />
+            <Button mnemonicParsing="false" onAction="#cancelAction" prefHeight="25.0" prefWidth="60.0" text="Cancel" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

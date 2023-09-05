@@ -1,0 +1,7 @@
+.separator *.line{
+    -fx-border-style: solid;
+    -fx-border-width: 2px;
+}
+.lowPane{
+
+}
