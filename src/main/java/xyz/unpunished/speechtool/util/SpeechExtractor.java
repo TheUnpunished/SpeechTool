@@ -17,56 +17,69 @@ import java.util.Locale;
 public class SpeechExtractor {
 
     public static void createTempWAV(FileCombo fc, int fileIndex, int soundIndex) throws IOException, InterruptedException {
-        STHSpeechFile sth = (STHSpeechFile) fc.getSpeechFiles()[1].getFiles()[fileIndex];
-        DATSpeechFile dat = (DATSpeechFile) fc.getSpeechFiles()[2].getFiles()[fileIndex];
-        STHEntry sthEntry = sth.getSTHEntries()[soundIndex];
-        BufferedInputStream is = new BufferedInputStream(
-                new FileInputStream(fc.getSpeechFiles()[2].getFileDir()));
-        int skipSize = dat.getFileOffset() + sthEntry.getOffset();
-        SpeechReplacer.skip(skipSize, is);
-        File tempFile = new File("temp.dat");
-        BufferedOutputStream os = new BufferedOutputStream(
-                new FileOutputStream(tempFile)
-        );
-        byte[] buf = new byte[(soundIndex == sth.getSTHEntries().length - 1)
-                ? dat.getFileSize() - sthEntry.getOffset()
-                : sth.getSTHEntries()[soundIndex + 1].getOffset() - sthEntry.getOffset()];
-        is.read(buf);
-        is.close();
-        os.write(buf);
-        os.flush();
-        os.close();
-        String cmd = "ealayer/ealayer3.exe temp.dat -w";
-        Runtime runtime = Runtime.getRuntime();
-        Process pr = runtime.exec(cmd);
-        pr.waitFor();
-        pr.destroy();
-        tempFile.delete();
+
+        String ealayerExecutable = "ealayer/ealayer3.exe";
+        File ealayerExecutableFile = new File(ealayerExecutable);
+        if(ealayerExecutableFile.exists() && !ealayerExecutableFile.isDirectory()) {
+                STHSpeechFile sth = (STHSpeechFile) fc.getSpeechFiles()[1].getFiles()[fileIndex];
+                DATSpeechFile dat = (DATSpeechFile) fc.getSpeechFiles()[2].getFiles()[fileIndex];
+                STHEntry sthEntry = sth.getSTHEntries()[soundIndex];
+                BufferedInputStream is = new BufferedInputStream(
+                        new FileInputStream(fc.getSpeechFiles()[2].getFileDir()));
+                int skipSize = dat.getFileOffset() + sthEntry.getOffset();
+                SpeechReplacer.skip(skipSize, is);
+                File tempFile = new File("temp.dat");
+                BufferedOutputStream os = new BufferedOutputStream(
+                        new FileOutputStream(tempFile)
+                );
+                byte[] buf = new byte[(soundIndex == sth.getSTHEntries().length - 1)
+                        ? dat.getFileSize() - sthEntry.getOffset()
+                        : sth.getSTHEntries()[soundIndex + 1].getOffset() - sthEntry.getOffset()];
+                is.read(buf);
+                is.close();
+                os.write(buf);
+                os.flush();
+                os.close();
+                String cmd = ealayerExecutable + " temp.dat -w";
+                Runtime runtime = Runtime.getRuntime();
+                Process pr = runtime.exec(cmd);
+                pr.waitFor();
+                pr.destroy();
+                tempFile.delete();
+        } else {
+                AlertCreator.createAndShow(Alert.AlertType.ERROR, "Error!", "Error", "Error playing sound file, missing " + ealayerExecutable );
+        }
     }
 
     public static void createTempWAV(FileCombo fc, int fileIndex) throws IOException, InterruptedException {
-        DATSpeechFile dat = (DATSpeechFile) fc.getSpeechFiles()[2].getFiles()[fileIndex];
-        BufferedInputStream is = new BufferedInputStream(
-                new FileInputStream(fc.getSpeechFiles()[2].getFileDir()));
-        int skipSize = dat.getFileOffset();
-        SpeechReplacer.skip(skipSize, is);
-        File tempDir = new File("temp");
-        if(!tempDir.exists())
-            tempDir.mkdir();
-        File tempFile = new File("temp/temp.dat");
-        BufferedOutputStream os = new BufferedOutputStream(
-                new FileOutputStream(tempFile)
-        );
-        skipSize = dat.getFileSize();
-        SpeechReplacer.skipWrite(skipSize, is, os);
-        os.flush();
-        os.close();
-        String cmd = "ealayer/ealayer3.exe temp/temp.dat -w";
-        Runtime runtime = Runtime.getRuntime();
-        Process pr = runtime.exec(cmd);
-        pr.waitFor();
-        pr.destroy();
-        tempFile.delete();
+        String ealayerExecutable = "ealayer/ealayer3.exe";
+        File ealayerExecutableFile = new File(ealayerExecutable);
+        if(ealayerExecutableFile.exists() && !ealayerExecutableFile.isDirectory()) {
+                DATSpeechFile dat = (DATSpeechFile) fc.getSpeechFiles()[2].getFiles()[fileIndex];
+                BufferedInputStream is = new BufferedInputStream(
+                        new FileInputStream(fc.getSpeechFiles()[2].getFileDir()));
+                int skipSize = dat.getFileOffset();
+                SpeechReplacer.skip(skipSize, is);
+                File tempDir = new File("temp");
+                if(!tempDir.exists())
+                tempDir.mkdir();
+                File tempFile = new File("temp/temp.dat");
+                BufferedOutputStream os = new BufferedOutputStream(
+                        new FileOutputStream(tempFile)
+                );
+                skipSize = dat.getFileSize();
+                SpeechReplacer.skipWrite(skipSize, is, os);
+                os.flush();
+                os.close();
+                String cmd = ealayerExecutable + " temp.dat -w";
+                Runtime runtime = Runtime.getRuntime();
+                Process pr = runtime.exec(cmd);
+                pr.waitFor();
+                pr.destroy();
+                tempFile.delete();
+        } else {
+                AlertCreator.createAndShow(Alert.AlertType.ERROR, "Error!", "Error", "Error playing sound file, missing " + ealayerExecutable );
+        }
     }
 
     public static void extractFile(FileCombo fc, int fileIndex, int soundIndex, File moveTo) throws IOException, InterruptedException {
