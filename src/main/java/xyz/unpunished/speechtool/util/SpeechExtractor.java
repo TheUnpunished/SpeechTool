@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Locale;
+import javafx.scene.control.Alert;
 
 public class SpeechExtractor {
 
